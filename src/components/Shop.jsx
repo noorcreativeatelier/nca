@@ -5,45 +5,64 @@ export default function Shop({ products, brandColors }) {
   const categories = ['All', ...new Set(products.map((p) => p.category))];
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const filteredProducts =
-    activeCategory === 'All'
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+  const filtered = activeCategory === 'All' ? products : products.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="w-full px-4 md:px-12 lg:px-24 2xl:px-32 py-16 animate-fadeIn">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>Digital Store</h1>
-        <p className="text-xl max-w-2xl mx-auto opacity-80">Instant downloads. Print at home or use on your tablet.</p>
-        <div className="w-24 h-1 mx-auto mt-6" style={{ backgroundColor: brandColors.gold }}></div>
+    <div className="animate-fadeIn w-full">
+      {/* Page Header */}
+      <div className="w-full px-6 md:px-12 lg:px-20 pt-16 pb-12 text-center">
+        <p className="text-[10px] font-medium tracking-[0.28em] uppercase mb-3" style={{ color: brandColors.gold }}>
+          Digital Store
+        </p>
+        <h1 className="text-5xl md:text-6xl font-light mb-5" style={{ fontFamily: "'Cormorant Garamond', serif", color: brandColors.teal }}>
+          The Collection
+        </h1>
+        <p className="text-sm opacity-60 max-w-md mx-auto leading-relaxed">
+          Instant downloads. Print at home or read on any device.
+        </p>
+        <div className="w-10 h-px mx-auto mt-5" style={{ backgroundColor: brandColors.gold }} />
       </div>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-12">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setActiveCategory(category)}
-            className={`px-6 py-2 font-bold rounded-full transition-all border-2 ${
-              activeCategory === category
-                ? 'bg-[#1A5F7A] text-white border-[#1A5F7A] shadow-md'
-                : 'bg-transparent text-[#1A5F7A] border-[#1A5F7A]/30 hover:border-[#1A5F7A]'
-            }`}
-            style={{ fontFamily: "'Cinzel', serif" }}
-          >
-            {category}
-          </button>
-        ))}
+      {/* Category Filter */}
+      <div className="w-full px-6 md:px-12 lg:px-20 pb-12">
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className="relative py-2 text-[11px] font-medium tracking-[0.15em] uppercase transition-colors"
+              style={{ color: activeCategory === cat ? brandColors.gold : brandColors.teal }}
+            >
+              {cat}
+              {activeCategory === cat && (
+                <span className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: brandColors.gold }} />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} brandColors={brandColors} />
-        ))}
+      {/* Count */}
+      <div className="w-full px-6 md:px-12 lg:px-20 pb-6">
+        <p className="text-xs opacity-40 tracking-wide">
+          {filtered.length} {filtered.length === 1 ? 'product' : 'products'}
+        </p>
       </div>
 
-      {filteredProducts.length === 0 && (
-        <p className="text-center italic opacity-70 mt-8">No products found in this category.</p>
-      )}
+      {/* Grid */}
+      <div className="w-full px-6 md:px-12 lg:px-20 pb-24">
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5 md:gap-6">
+            {filtered.map((product) => (
+              <ProductCard key={product.id} product={product} brandColors={brandColors} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-24">
+            <p className="text-sm opacity-40 italic">No products found in this category.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

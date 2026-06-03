@@ -10,7 +10,6 @@ import Tools from './components/Tools';
 import Sounds from './components/Sounds';
 import AdminPanel from './components/AdminPanel';
 
-// --- CONFIGURATION & DATA ---
 const BRAND_COLORS = {
   teal: '#1A5F7A',
   gold: '#C8963E',
@@ -88,69 +87,21 @@ const BLOG_POSTS = [
 ];
 
 const TOOLS_DATA = [
-  {
-    id: 'tool-1',
-    type: 'zakat',
-    title: 'Zakat Calculator',
-    description: 'Calculate your 2.5% Zakat on total eligible wealth (savings, gold, investments).',
-    buttonLabel: 'Calculate Zakat',
-    buttonUrl: '#',
-    extraInfo: '',
-  },
-  {
-    id: 'tool-2',
-    type: 'hijri',
-    title: 'Hijri Converter',
-    description: 'Convert Gregorian dates to the Islamic Hijri calendar.',
-    buttonLabel: 'Convert Date',
-    buttonUrl: '#',
-    extraInfo: 'Today: 14 Jumada al-Ula, 1448 AH',
-  },
-  {
-    id: 'tool-3',
-    type: 'prayer',
-    title: 'Prayer Time Finder',
-    description: 'Local prayer times based on your city.',
-    buttonLabel: 'Detect Location',
-    buttonUrl: '#',
-    extraInfo: '',
-  },
-  {
-    id: 'tool-4',
-    type: 'countdown',
-    title: 'Ramadan 2027 Countdown',
-    description: 'Countdown to the next Ramadan with an easy reference display.',
-    buttonLabel: '',
-    buttonUrl: '',
-    extraInfo: '112 Days • 14 Hours • 30 Mins',
-  },
+  { id: 'tool-1', type: 'zakat', title: 'Zakat Calculator', description: 'Calculate your 2.5% Zakat on total eligible wealth (savings, gold, investments).', buttonLabel: 'Calculate Zakat', buttonUrl: '#', extraInfo: '' },
+  { id: 'tool-2', type: 'hijri', title: 'Hijri Converter', description: 'Convert Gregorian dates to the Islamic Hijri calendar.', buttonLabel: 'Convert Date', buttonUrl: '#', extraInfo: 'Today: 14 Jumada al-Ula, 1448 AH' },
+  { id: 'tool-3', type: 'prayer', title: 'Prayer Time Finder', description: 'Local prayer times based on your city.', buttonLabel: 'Detect Location', buttonUrl: '#', extraInfo: '' },
+  { id: 'tool-4', type: 'countdown', title: 'Ramadan 2027 Countdown', description: 'Countdown to the next Ramadan with an easy reference display.', buttonLabel: '', buttonUrl: '', extraInfo: '112 Days • 14 Hours • 30 Mins' },
 ];
 
 const SOUNDS_DATA = [
-  {
-    id: 'sound-1',
-    title: 'Raindrops & Distant Thunder for Deep Focus',
-    subtitle: '2 Hours • No Instruments',
-    image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+1',
-    link: '#',
-  },
-  {
-    id: 'sound-2',
-    title: 'Soft Prayer Room Ambience',
-    subtitle: '1.5 Hours • Pure Vocal Focus',
-    image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+2',
-    link: '#',
-  },
-  {
-    id: 'sound-3',
-    title: 'Oud-Free Evening Remembrance',
-    subtitle: '3 Hours • Subtle Wind Chimes',
-    image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+3',
-    link: '#',
-  },
+  { id: 'sound-1', title: 'Raindrops & Distant Thunder for Deep Focus', subtitle: '2 Hours • No Instruments', image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+1', link: '#' },
+  { id: 'sound-2', title: 'Soft Prayer Room Ambience', subtitle: '1.5 Hours • Pure Vocal Focus', image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+2', link: '#' },
+  { id: 'sound-3', title: 'Oud-Free Evening Remembrance', subtitle: '3 Hours • Subtle Wind Chimes', image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+3', link: '#' },
 ];
 
-// --- MAIN APP COMPONENT ---
+const NAV_PAGES = ['home', 'shop', 'blog', 'tools', 'sounds'];
+const NAV_LABELS = { home: 'Home', shop: 'Shop', blog: 'Journal', tools: 'Tools', sounds: 'Sounds' };
+
 export default function App() {
   const location = useLocation();
   const navigateRouter = useNavigate();
@@ -159,114 +110,89 @@ export default function App() {
   const [toolsData, setToolsData] = useState(TOOLS_DATA);
   const [soundscapes, setSoundscapes] = useState(SOUNDS_DATA);
   const blogMatch = useMatch('/blog/:postId');
-  const activePost = blogMatch ? blogPosts.find((post) => post.id.toString() === blogMatch.params.postId) : null;
+  const activePost = blogMatch ? blogPosts.find((p) => p.id.toString() === blogMatch.params.postId) : null;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const currentPage = blogMatch
     ? 'blogPost'
-    : location.pathname === '/'
-    ? 'home'
-    : location.pathname === '/shop'
-    ? 'shop'
-    : location.pathname === '/blog'
-    ? 'blog'
-    : location.pathname === '/tools'
-    ? 'tools'
-    : location.pathname === '/sounds'
-    ? 'sounds'
-    : location.pathname === '/admin'
-    ? 'admin'
+    : location.pathname === '/' ? 'home'
+    : location.pathname === '/shop' ? 'shop'
+    : location.pathname === '/blog' ? 'blog'
+    : location.pathname === '/tools' ? 'tools'
+    : location.pathname === '/sounds' ? 'sounds'
+    : location.pathname === '/admin' ? 'admin'
     : 'home';
 
   const navigate = (page, data = null) => {
-    let path = '/';
-
-    switch (page) {
-      case 'shop':
-        path = '/shop';
-        break;
-      case 'blog':
-        path = '/blog';
-        break;
-      case 'blogPost':
-        path = data?.id ? `/blog/${data.id}` : '/blog';
-        break;
-      case 'tools':
-        path = '/tools';
-        break;
-      case 'sounds':
-        path = '/sounds';
-        break;
-      case 'admin':
-        path = '/admin';
-        break;
-      default:
-        path = '/';
-    }
-
-    navigateRouter(path);
+    const paths = { shop: '/shop', blog: '/blog', blogPost: data?.id ? `/blog/${data.id}` : '/blog', tools: '/tools', sounds: '/sounds', admin: '/admin' };
+    navigateRouter(paths[page] ?? '/');
     setIsMobileMenuOpen(false);
     window.scrollTo(0, 0);
   };
 
-  // Inject Google Fonts
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;700&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     return () => document.head.removeChild(link);
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col font-serif w-full overflow-x-hidden" style={{ backgroundColor: BRAND_COLORS.ivory, color: BRAND_COLORS.teal, fontFamily: "'Amiri', serif" }}>
-      
-      {/* HEADER */}
-      <header className="sticky top-0 z-50 w-full bg-[#FAF7F0]/95 backdrop-blur shadow-sm border-b border-[#C8963E]/20">
-        <div className="w-full px-4 md:px-12 lg:px-24 2xl:px-32">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo */}
-            <div className="flex-shrink-0 cursor-pointer flex flex-col justify-center" onClick={() => navigate('home')}>
-              <h1 className="text-2xl md:text-3xl font-bold tracking-wider" style={{ fontFamily: "'Cinzel', serif" }}>
-                NOOR <span style={{ color: BRAND_COLORS.gold }}>CREATIVE</span> ATELIER
-              </h1>
-            </div>
+    <div className="min-h-screen flex flex-col w-full overflow-x-hidden" style={{ backgroundColor: BRAND_COLORS.ivory, fontFamily: "'DM Sans', system-ui, sans-serif", color: BRAND_COLORS.teal }}>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
-              {['home', 'shop', 'blog', 'tools', 'sounds'].map((page) => (
+      {/* HEADER */}
+      <header className="sticky top-0 z-50 w-full bg-[#FAF7F0]/96 backdrop-blur-sm" style={{ borderBottom: '1px solid rgba(200,150,62,0.18)' }}>
+        <div className="w-full px-6 md:px-12 lg:px-20">
+          <div className="flex items-center justify-between h-16">
+
+            {/* Logo */}
+            <button onClick={() => navigate('home')} className="flex-shrink-0">
+              <span className="text-lg md:text-xl font-bold tracking-[0.18em]" style={{ fontFamily: "'Cinzel', serif", color: BRAND_COLORS.teal }}>
+                NOOR <span style={{ color: BRAND_COLORS.gold }}>CREATIVE</span> ATELIER
+              </span>
+            </button>
+
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-8">
+              {NAV_PAGES.map((page) => (
                 <button
                   key={page}
                   onClick={() => navigate(page)}
-                  className={`text-lg uppercase tracking-widest hover:text-[#C8963E] transition-colors ${currentPage === page ? 'text-[#C8963E] font-bold' : ''}`}
-                  style={{ fontFamily: "'Cinzel', serif" }}
+                  className="relative text-[11px] font-medium tracking-[0.18em] uppercase transition-colors pb-0.5"
+                  style={{ color: currentPage === page ? BRAND_COLORS.gold : BRAND_COLORS.teal }}
                 >
-                  {page}
+                  {NAV_LABELS[page]}
+                  {currentPage === page && (
+                    <span className="absolute -bottom-px left-0 right-0 h-[1.5px]" style={{ backgroundColor: BRAND_COLORS.gold }} />
+                  )}
                 </button>
               ))}
             </nav>
 
-            {/* Cart & Mobile Toggle */}
-                  <div className="flex items-center space-x-4">
-              <button className="md:hidden p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
+            {/* Mobile Toggle */}
+            <button
+              className="md:hidden p-2 -mr-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-[#FAF7F0] border-b border-[#1A5F7A]/10">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {['home', 'shop', 'blog', 'tools', 'sounds'].map((page) => (
+          <div className="md:hidden animate-slideDown" style={{ borderTop: '1px solid rgba(26,95,122,0.08)', backgroundColor: '#FAF7F0' }}>
+            <div className="px-6 py-4 flex flex-col gap-1">
+              {NAV_PAGES.map((page) => (
                 <button
                   key={page}
                   onClick={() => navigate(page)}
-                  className="block w-full text-left px-3 py-2 text-base font-medium uppercase tracking-widest hover:bg-[#1A5F7A]/5 hover:text-[#C8963E]"
-                  style={{ fontFamily: "'Cinzel', serif" }}
+                  className="text-left py-3 text-[11px] font-medium tracking-[0.18em] uppercase border-b"
+                  style={{ color: currentPage === page ? BRAND_COLORS.gold : BRAND_COLORS.teal, borderColor: 'rgba(26,95,122,0.06)' }}
                 >
-                  {page}
+                  {NAV_LABELS[page]}
                 </button>
               ))}
             </div>
@@ -277,7 +203,7 @@ export default function App() {
       {/* BREADCRUMBS */}
       <Breadcrumbs currentPage={currentPage} activePost={activePost} navigate={navigate} brandColors={BRAND_COLORS} />
 
-      {/* MAIN CONTENT AREA */}
+      {/* MAIN */}
       <main className="flex-grow w-full">
         <Routes>
           <Route path="/" element={<Home navigate={navigate} products={products} brandColors={BRAND_COLORS} />} />
@@ -291,46 +217,66 @@ export default function App() {
         </Routes>
       </main>
 
-      {/* FOOTER - Email List (Rule #5) */}
-      <footer className="w-full" style={{ backgroundColor: BRAND_COLORS.teal, color: BRAND_COLORS.ivory }}>
-        <div className="w-full px-4 md:px-12 lg:px-24 2xl:px-32 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24">
+      {/* FOOTER */}
+      <footer style={{ backgroundColor: BRAND_COLORS.teal, color: BRAND_COLORS.ivory }}>
+        <div className="w-full px-6 md:px-12 lg:px-20 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+            {/* Brand */}
             <div>
-              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>Noor Creative Atelier</h2>
-              <p className="opacity-80 text-lg">Inspiring meaningful Islamic learning for every stage of life.</p>
+              <p className="text-base font-bold tracking-[0.18em] mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+                NOOR <span style={{ color: BRAND_COLORS.gold }}>CREATIVE</span> ATELIER
+              </p>
+              <p className="text-sm opacity-60 leading-relaxed max-w-xs">
+                Premium Islamic digital resources for Muslim families at every stage of life.
+              </p>
             </div>
+
+            {/* Links */}
             <div>
-              <h3 className="text-xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif", color: BRAND_COLORS.gold }}>Quick Links</h3>
-              <ul className="space-y-2 opacity-80">
-                <li><button onClick={() => navigate('shop')} className="hover:text-[#C8963E]">Digital Shop</button></li>
-                <li><button onClick={() => navigate('tools')} className="hover:text-[#C8963E]">Islamic Tools</button></li>
-                <li><button onClick={() => navigate('sounds')} className="hover:text-[#C8963E]">Ambient Sounds</button></li>
-                <li><button onClick={() => navigate('admin')} className="hover:text-[#C8963E]">Admin Panel</button></li>
-                <li><a href="#" className="hover:text-[#C8963E]">Privacy Policy</a></li>
+              <p className="text-[10px] font-medium tracking-[0.2em] uppercase mb-5 opacity-50">Explore</p>
+              <ul className="space-y-3">
+                {[['shop', 'Digital Shop'], ['tools', 'Islamic Tools'], ['sounds', 'Ambient Sounds'], ['blog', 'The Journal']].map(([page, label]) => (
+                  <li key={page}>
+                    <button onClick={() => navigate(page)} className="text-sm opacity-70 hover:opacity-100 transition-opacity">
+                      {label}
+                    </button>
+                  </li>
+                ))}
+                <li><button onClick={() => navigate('admin')} className="text-sm opacity-40 hover:opacity-60 transition-opacity">Admin</button></li>
               </ul>
             </div>
+
+            {/* Newsletter */}
             <div>
-              <h3 className="text-xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif", color: BRAND_COLORS.gold }}>Join Our Newsletter</h3>
-              <p className="opacity-80 mb-4">Get a free '30 Days of Dua Chart' printable when you sign up.</p>
-              <form className="flex" onSubmit={(e) => e.preventDefault()}>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="px-4 py-2 w-full rounded-l text-[#1A5F7A] focus:outline-none"
+              <p className="text-[10px] font-medium tracking-[0.2em] uppercase mb-5 opacity-50">Newsletter</p>
+              <p className="text-sm opacity-60 leading-relaxed mb-5">
+                Get a free <em>'30 Days of Dua Chart'</em> printable when you sign up.
+              </p>
+              <form className="flex gap-0" onSubmit={(e) => e.preventDefault()}>
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="flex-1 px-4 py-2.5 text-sm bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-white/40"
                 />
-                <button className="px-4 py-2 rounded-r font-bold text-white hover:opacity-90" style={{ backgroundColor: BRAND_COLORS.gold }}>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 text-[11px] font-medium tracking-[0.15em] uppercase text-white transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: BRAND_COLORS.gold }}
+                >
                   Join
                 </button>
               </form>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-white/20 text-center opacity-60 text-sm">
-            <p>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
-            <p>&copy; 2026 Noor Creative Atelier. All rights reserved.</p>
+
+          {/* Bottom */}
+          <div className="mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <p className="text-sm opacity-60 font-light" style={{ fontFamily: "'Cormorant Garamond', serif" }}>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+            <p className="text-xs opacity-40 tracking-wide">&copy; 2026 Noor Creative Atelier. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-

@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local-only admin tooling (dev branch convenience, not shipped)
+src/components/AdminPage.jsx
+public/uploads/

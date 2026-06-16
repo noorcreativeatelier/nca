@@ -1,58 +1,123 @@
 import { ArrowLeft } from 'lucide-react';
+import { parseContentBlock } from '../utils/blogContent';
 
 export default function BlogPost({ post, navigate, brandColors }) {
-  return (
-    <div className="w-full max-w-5xl mx-auto px-4 md:px-12 py-16 animate-fadeIn">
-      <button
-        onClick={() => navigate('blog')}
-        className="mb-8 flex items-center hover:text-[#C8963E] transition-colors font-bold uppercase tracking-wider text-sm"
-      >
-        <ArrowLeft size={16} className="mr-2" /> Back to Journal
-      </button>
-
-      <div className="text-center mb-10">
-        <span className="text-sm font-bold uppercase tracking-wider mb-4 block" style={{ color: brandColors.gold }}>
-          {post.category} • {post.date}
-        </span>
-        <h1 className="text-4xl md:text-5xl font-bold mb-8 leading-tight" style={{ fontFamily: "'Cinzel', serif" }}>
-          {post.title}
-        </h1>
-        <div
-          className="w-full h-[400px] md:h-[500px] bg-gray-200 rounded-lg mb-10 object-cover flex items-center justify-center text-gray-400"
-          style={{
-            backgroundImage: `url('https://placehold.co/1600x800/${brandColors.teal.replace('#', '')}/${brandColors.ivory.replace('#', '')}?text=Blog+Header+Image')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        ></div>
-      </div>
-
-      <div className="prose prose-lg max-w-none text-left">
-        {post.content.split('\n\n').map((paragraph, idx) => (
-          <p key={idx} className="mb-6 text-lg leading-relaxed opacity-90">
-            {paragraph}
-          </p>
-        ))}
-      </div>
-
-      <div className="mt-12 p-8 rounded-lg bg-white border border-[#C8963E]/30 shadow-sm text-center">
-        <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>Continue the Journey</h3>
-        <p className="mb-6 opacity-80">Explore our premium digital resources specifically designed to complement this topic.</p>
-        <button
-          onClick={() => navigate('shop')}
-          className="px-8 py-3 font-bold rounded text-white shadow hover:opacity-90 transition-opacity"
-          style={{ backgroundColor: brandColors.teal }}
-        >
-          Shop Related Resources
+  if (!post) {
+    return (
+      <div className="w-full px-6 py-32 text-center animate-fadeIn">
+        <p className="text-sm opacity-50">Post not found.</p>
+        <button onClick={() => navigate('blog')} className="mt-6 text-xs tracking-[0.15em] uppercase font-medium underline" style={{ color: brandColors.teal }}>
+          Back to Journal
         </button>
       </div>
+    );
+  }
 
-      <div className="mt-16 pt-8 border-t border-[#1A5F7A]/20 flex justify-between items-center">
-        <h3 className="text-xl font-bold" style={{ fontFamily: "'Cinzel', serif" }}>Share this article</h3>
-        <div className="flex space-x-4">
-          <button className="text-[#1A5F7A] hover:text-[#C8963E] transition-colors font-bold text-sm uppercase tracking-wider">Facebook</button>
-          <button className="text-[#1A5F7A] hover:text-[#C8963E] transition-colors font-bold text-sm uppercase tracking-wider">Twitter</button>
-          <button className="text-[#1A5F7A] hover:text-[#C8963E] transition-colors font-bold text-sm uppercase tracking-wider">Email</button>
+  return (
+    <div className="animate-fadeIn w-full">
+      {/* Hero image */}
+      <div
+        className="w-full"
+        style={{
+          height: '50vh',
+          minHeight: '320px',
+          backgroundImage: `url('https://placehold.co/1600x800/${brandColors.teal.replace('#', '')}/FAF7F0?text=')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+
+      {/* Content */}
+      <div className="w-full px-6 md:px-12 lg:px-20">
+        <div className="max-w-2xl mx-auto">
+          {/* Back */}
+          <button
+            onClick={() => navigate('blog')}
+            className="flex items-center gap-2 mt-10 mb-10 text-[10px] tracking-[0.18em] uppercase font-medium transition-opacity hover:opacity-60"
+            style={{ color: brandColors.teal }}
+          >
+            <ArrowLeft size={14} /> Back to Journal
+          </button>
+
+          {/* Meta */}
+          <p className="text-[10px] tracking-[0.22em] uppercase font-medium mb-4" style={{ color: brandColors.gold }}>
+            {post.category} · {post.date}
+          </p>
+
+          {/* Title */}
+          <h1
+            className="text-4xl md:text-5xl font-light leading-tight mb-10"
+            style={{ fontFamily: "'Cormorant Garamond', serif", color: brandColors.teal }}
+          >
+            {post.title}
+          </h1>
+
+          {/* Divider */}
+          <div className="w-10 h-px mb-10" style={{ backgroundColor: brandColors.gold }} />
+
+          {/* Body */}
+          <div className="space-y-6 pb-16">
+            {post.content.split('\n\n').map((block, i) => {
+              const parsed = parseContentBlock(block);
+              if (parsed.type === 'image') {
+                return (
+                  <figure key={i} className="my-2">
+                    <img
+                      src={parsed.src}
+                      alt={parsed.alt}
+                      className="w-full h-auto"
+                      style={{ border: '1px solid rgba(26,95,122,0.08)' }}
+                    />
+                    {parsed.alt && (
+                      <figcaption className="text-xs text-center opacity-50 mt-3">{parsed.alt}</figcaption>
+                    )}
+                  </figure>
+                );
+              }
+              return (
+                <p key={i} className="text-base leading-[1.85] opacity-75">
+                  {parsed.text}
+                </p>
+              );
+            })}
+          </div>
+
+          {/* Share bar */}
+          <div
+            className="flex items-center justify-between py-6 mb-12"
+            style={{ borderTop: '1px solid rgba(26,95,122,0.1)', borderBottom: '1px solid rgba(26,95,122,0.1)' }}
+          >
+            <p className="text-[10px] tracking-[0.18em] uppercase opacity-50">Share</p>
+            <div className="flex gap-6">
+              {['Facebook', 'Twitter', 'Email'].map((platform) => (
+                <button key={platform} className="text-[10px] tracking-[0.15em] uppercase font-medium transition-opacity hover:opacity-60" style={{ color: brandColors.teal }}>
+                  {platform}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="w-full py-20" style={{ backgroundColor: brandColors.teal }}>
+        <div className="max-w-xl mx-auto text-center px-6">
+          <p className="text-[10px] tracking-[0.25em] uppercase font-medium mb-4" style={{ color: brandColors.gold }}>
+            Continue the Journey
+          </p>
+          <h2 className="text-3xl font-light mb-4" style={{ fontFamily: "'Cormorant Garamond', serif", color: brandColors.ivory }}>
+            Explore Related Resources
+          </h2>
+          <p className="text-sm opacity-60 mb-8" style={{ color: brandColors.ivory }}>
+            Browse our premium digital collection designed to complement your Islamic parenting journey.
+          </p>
+          <button
+            onClick={() => navigate('shop')}
+            className="px-10 py-4 text-[11px] font-medium tracking-[0.18em] uppercase text-white transition-opacity hover:opacity-90"
+            style={{ backgroundColor: brandColors.gold }}
+          >
+            Shop Resources
+          </button>
         </div>
       </div>
     </div>

@@ -1,5 +1,8 @@
+import { getExcerpt } from '../utils/blogContent';
+
 export default function Blog({ navigate, posts, brandColors }) {
-  const [featured, ...rest] = posts;
+  const featured = posts.find((post) => post.featured) || posts[0];
+  const rest = posts.filter((post) => post.id !== featured?.id);
 
   return (
     <div className="animate-fadeIn w-full">
@@ -46,7 +49,7 @@ export default function Blog({ navigate, posts, brandColors }) {
                 {featured.title}
               </h2>
               <p className="text-sm leading-relaxed opacity-60 mb-8">
-                {featured.content.split('\n\n')[0].slice(0, 160)}…
+                {getExcerpt(featured.content, 160)}…
               </p>
               <span
                 className="self-start text-[10px] tracking-[0.18em] uppercase font-medium pb-0.5"
@@ -88,7 +91,7 @@ export default function Blog({ navigate, posts, brandColors }) {
                     {post.title}
                   </h2>
                   <p className="text-xs leading-relaxed opacity-50 mb-5">
-                    {post.content.split('\n\n')[0].slice(0, 100)}…
+                    {getExcerpt(post.content, 100)}…
                   </p>
                   <span
                     className="text-[10px] tracking-[0.15em] uppercase font-medium pb-0.5"

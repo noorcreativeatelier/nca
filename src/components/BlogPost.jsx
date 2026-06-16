@@ -1,4 +1,5 @@
 import { ArrowLeft } from 'lucide-react';
+import { parseContentBlock } from '../utils/blogContent';
 
 export default function BlogPost({ post, navigate, brandColors }) {
   if (!post) {
@@ -56,11 +57,29 @@ export default function BlogPost({ post, navigate, brandColors }) {
 
           {/* Body */}
           <div className="space-y-6 pb-16">
-            {post.content.split('\n\n').map((para, i) => (
-              <p key={i} className="text-base leading-[1.85] opacity-75">
-                {para}
-              </p>
-            ))}
+            {post.content.split('\n\n').map((block, i) => {
+              const parsed = parseContentBlock(block);
+              if (parsed.type === 'image') {
+                return (
+                  <figure key={i} className="my-2">
+                    <img
+                      src={parsed.src}
+                      alt={parsed.alt}
+                      className="w-full h-auto"
+                      style={{ border: '1px solid rgba(26,95,122,0.08)' }}
+                    />
+                    {parsed.alt && (
+                      <figcaption className="text-xs text-center opacity-50 mt-3">{parsed.alt}</figcaption>
+                    )}
+                  </figure>
+                );
+              }
+              return (
+                <p key={i} className="text-base leading-[1.85] opacity-75">
+                  {parsed.text}
+                </p>
+              );
+            })}
           </div>
 
           {/* Share bar */}

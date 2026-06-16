@@ -1,0 +1,38 @@
+[
+  {
+    "id": "tool-1",
+    "type": "zakat",
+    "title": "Zakat Calculator",
+    "description": "Calculate your 2.5% Zakat on total eligible wealth (savings, gold, investments).",
+    "buttonLabel": "Calculate Zakat",
+    "buttonUrl": "#",
+    "extraInfo": ""
+  },
+  {
+    "id": "tool-2",
+    "type": "hijri",
+    "title": "Hijri Converter",
+    "description": "Convert Gregorian dates to the Islamic Hijri calendar.",
+    "buttonLabel": "Convert Date",
+    "buttonUrl": "#",
+    "extraInfo": "Today: 14 Jumada al-Ula, 1448 AH"
+  },
+  {
+    "id": "tool-3",
+    "type": "prayer",
+    "title": "Prayer Time Finder",
+    "description": "Local prayer times based on your city.",
+    "buttonLabel": "Detect Location",
+    "buttonUrl": "#",
+    "extraInfo": ""
+  },
+  {
+    "id": "tool-4",
+    "type": "countdown",
+    "title": "Ramadan 2027 Countdown",
+    "description": "Countdown to the next Ramadan with an easy reference display.",
+    "buttonLabel": "",
+    "buttonUrl": "",
+    "extraInfo": "112 Days • 14 Hours • 30 Mins"
+  }
+]

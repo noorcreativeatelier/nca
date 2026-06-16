@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useLocation, useNavigate, useMatch, Routes, Route } from 'react-router-dom';
 import Breadcrumbs from './components/Breadcrumbs';
@@ -8,7 +8,9 @@ import Blog from './components/Blog';
 import BlogPost from './components/BlogPost';
 import Tools from './components/Tools';
 import Sounds from './components/Sounds';
-import AdminPanel from './components/AdminPanel';
+import PRODUCTS from './content/products.json';
+import BLOG_POSTS from './content/blogPosts.json';
+import TOOLS_DATA from './content/tools.json';
 
 const BRAND_COLORS = {
   teal: '#1A5F7A',
@@ -16,88 +18,12 @@ const BRAND_COLORS = {
   ivory: '#FAF7F0'
 };
 
-const PRODUCTS = [
-  {
-    id: 1,
-    title: 'Noor Quest Book 1 (PDF)',
-    price: 6.99,
-    type: 'eBook',
-    category: 'eBooks & Stories',
-    image: 'https://placehold.co/400x500/1A5F7A/FAF7F0?text=Noor+Quest+Book+1',
-    purchaseLinks: [
-      { platform: 'Etsy', url: 'https://www.etsy.com/search?q=noor+quest+book' },
-      { platform: 'Gumroad', url: 'https://gumroad.com/search?q=noor+quest+book' },
-    ],
-  },
-  {
-    id: 2,
-    title: '99 Names of Allah Coloring Book',
-    price: 4.99,
-    type: 'Printable',
-    category: 'Coloring & Activities',
-    image: 'https://placehold.co/400x500/1A5F7A/FAF7F0?text=99+Names+Coloring',
-    purchaseLinks: [
-      { platform: 'Etsy', url: 'https://www.etsy.com/search?q=99+names+coloring+book' },
-      { platform: 'Gumroad', url: 'https://gumroad.com/search?q=99+names+coloring+book' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Ramadan Activity Planner',
-    price: 3.99,
-    type: 'Printable',
-    category: 'Planners & Journals',
-    image: 'https://placehold.co/400x500/1A5F7A/FAF7F0?text=Ramadan+Planner',
-    purchaseLinks: [
-      { platform: 'Etsy', url: 'https://www.etsy.com/search?q=ramadan+activity+planner' },
-      { platform: 'Gumroad', url: 'https://gumroad.com/search?q=ramadan+activity+planner' },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Islamic Kids Journal — My Dua Book',
-    price: 5.99,
-    type: 'Printable',
-    category: 'Planners & Journals',
-    image: 'https://placehold.co/400x500/1A5F7A/FAF7F0?text=My+Dua+Book',
-    purchaseLinks: [
-      { platform: 'Etsy', url: 'https://www.etsy.com/search?q=my+dua+book' },
-      { platform: 'Gumroad', url: 'https://gumroad.com/search?q=my+dua+book' },
-    ],
-  },
-  {
-    id: 5,
-    title: '99 Names Flash Cards',
-    price: 2.99,
-    type: 'Printable',
-    category: 'Coloring & Activities',
-    image: 'https://placehold.co/400x500/1A5F7A/FAF7F0?text=99+Names+Flashcards',
-    purchaseLinks: [
-      { platform: 'Etsy', url: 'https://www.etsy.com/search?q=99+names+flashcards' },
-      { platform: 'Gumroad', url: 'https://gumroad.com/search?q=99+names+flashcards' },
-    ],
-  },
-];
-
-const BLOG_POSTS = [
-  { id: 1, title: 'How to Teach Your Child the 99 Names of Allah at Home', category: 'Parenting', date: 'Oct 12, 2026', content: "Teaching the 99 Names of Allah (Asma ul Husna) to children is one of the most beautiful ways to introduce them to their Creator.\n\nStart by incorporating just one name a day into your daily routine. For example, when feeding them, remind them that Allah is Ar-Razzaq (The Provider). When they make a mistake and you forgive them, teach them about Al-Ghafoor (The Forgiving).\n\nConsistency is key. Use visual aids like flashcards or coloring books to make the learning process engaging and interactive." },
-  { id: 2, title: 'The Best Islamic Coloring Books for Muslim Children (2026)', category: 'Resources', date: 'Oct 15, 2026', content: "Finding high-quality Islamic coloring books can be challenging, but it's an excellent way to combine creativity with deen.\n\nOur top picks for 2026 focus on books that not only provide beautiful illustrations but also include educational snippets. Look for coloring books that cover topics like the Prophets, the 99 Names of Allah, and basic daily duas.\n\nArt is a powerful medium for young minds to absorb complex concepts in a simplified, enjoyable manner." },
-  { id: 3, title: '10 Ramadan Activities for Kids That Actually Work', category: 'Ramadan', date: 'Oct 18, 2026', content: "Ramadan is a magical time, and making it special for children helps instill a lifelong love for the holy month.\n\nInstead of just focusing on fasting (which may be difficult for young ones), create a festive atmosphere. Decorate the house together, make a 'Good Deeds' jar, and involve them in preparing Iftar.\n\nA Ramadan Activity Planner can keep them engaged with daily tasks, simple crafts, and age-appropriate learning goals, making them feel like active participants in the blessed month." },
-  { id: 4, title: 'Why Islamic Journaling is Sunnah for Muslim Children', category: 'Spiritual', date: 'Oct 22, 2026', content: "Journaling is more than just keeping a diary; it's a tool for self-reflection (Muhasabah), which is deeply rooted in Islamic tradition.\n\nEncouraging children to journal their thoughts, duas, and things they are grateful for helps them develop a strong connection with Allah. It teaches them mindfulness and emotional regulation through an Islamic lens.\n\nStart with guided journals that prompt them to think about their blessings, their daily prayers, and their goals for the hereafter." },
-];
-
-const TOOLS_DATA = [
-  { id: 'tool-1', type: 'zakat', title: 'Zakat Calculator', description: 'Calculate your 2.5% Zakat on total eligible wealth (savings, gold, investments).', buttonLabel: 'Calculate Zakat', buttonUrl: '#', extraInfo: '' },
-  { id: 'tool-2', type: 'hijri', title: 'Hijri Converter', description: 'Convert Gregorian dates to the Islamic Hijri calendar.', buttonLabel: 'Convert Date', buttonUrl: '#', extraInfo: 'Today: 14 Jumada al-Ula, 1448 AH' },
-  { id: 'tool-3', type: 'prayer', title: 'Prayer Time Finder', description: 'Local prayer times based on your city.', buttonLabel: 'Detect Location', buttonUrl: '#', extraInfo: '' },
-  { id: 'tool-4', type: 'countdown', title: 'Ramadan 2027 Countdown', description: 'Countdown to the next Ramadan with an easy reference display.', buttonLabel: '', buttonUrl: '', extraInfo: '112 Days • 14 Hours • 30 Mins' },
-];
-
-const SOUNDS_DATA = [
-  { id: 'sound-1', title: 'Raindrops & Distant Thunder for Deep Focus', subtitle: '2 Hours • No Instruments', image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+1', link: '#' },
-  { id: 'sound-2', title: 'Soft Prayer Room Ambience', subtitle: '1.5 Hours • Pure Vocal Focus', image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+2', link: '#' },
-  { id: 'sound-3', title: 'Oud-Free Evening Remembrance', subtitle: '3 Hours • Subtle Wind Chimes', image: 'https://placehold.co/800x450/1A5F7A/FAF7F0?text=Ambient+Soundscape+3', link: '#' },
-];
+// AdminPage.jsx is gitignored (local-only tooling) — glob it so the build
+// doesn't fail when the file isn't present (e.g. fresh checkouts, production).
+const adminPageModules = import.meta.glob('./components/AdminPage.jsx');
+const AdminPageLazy = adminPageModules['./components/AdminPage.jsx']
+  ? lazy(adminPageModules['./components/AdminPage.jsx'])
+  : null;
 
 const NAV_PAGES = ['home', 'shop', 'blog', 'tools', 'sounds'];
 const NAV_LABELS = { home: 'Home', shop: 'Shop', blog: 'Journal', tools: 'Tools', sounds: 'Sounds' };
@@ -105,10 +31,9 @@ const NAV_LABELS = { home: 'Home', shop: 'Shop', blog: 'Journal', tools: 'Tools'
 export default function App() {
   const location = useLocation();
   const navigateRouter = useNavigate();
-  const [products, setProducts] = useState(PRODUCTS);
-  const [blogPosts, setBlogPosts] = useState(BLOG_POSTS);
-  const [toolsData, setToolsData] = useState(TOOLS_DATA);
-  const [soundscapes, setSoundscapes] = useState(SOUNDS_DATA);
+  const products = PRODUCTS;
+  const blogPosts = BLOG_POSTS;
+  const toolsData = TOOLS_DATA;
   const blogMatch = useMatch('/blog/:postId');
   const activePost = blogMatch ? blogPosts.find((p) => p.id.toString() === blogMatch.params.postId) : null;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -211,8 +136,17 @@ export default function App() {
           <Route path="/blog" element={<Blog navigate={navigate} posts={blogPosts} brandColors={BRAND_COLORS} />} />
           <Route path="/blog/:postId" element={<BlogPost post={activePost} navigate={navigate} brandColors={BRAND_COLORS} />} />
           <Route path="/tools" element={<Tools brandColors={BRAND_COLORS} toolsData={toolsData} />} />
-          <Route path="/sounds" element={<Sounds brandColors={BRAND_COLORS} soundscapes={soundscapes} />} />
-          <Route path="/admin" element={<AdminPanel products={products} setProducts={setProducts} posts={blogPosts} setPosts={setBlogPosts} toolsData={toolsData} setToolsData={setToolsData} soundscapes={soundscapes} setSoundscapes={setSoundscapes} brandColors={BRAND_COLORS} />} />
+          <Route path="/sounds" element={<Sounds brandColors={BRAND_COLORS} />} />
+          {AdminPageLazy && (
+            <Route
+              path="/admin"
+              element={
+                <Suspense fallback={<div className="py-32 text-center text-sm opacity-50">Loading admin…</div>}>
+                  <AdminPageLazy brandColors={BRAND_COLORS} />
+                </Suspense>
+              }
+            />
+          )}
           <Route path="*" element={<Home navigate={navigate} products={products} brandColors={BRAND_COLORS} />} />
         </Routes>
       </main>
@@ -243,7 +177,9 @@ export default function App() {
                     </button>
                   </li>
                 ))}
-                <li><button onClick={() => navigate('admin')} className="text-sm opacity-40 hover:opacity-60 transition-opacity">Admin</button></li>
+                {AdminPageLazy && (
+                  <li><button onClick={() => navigate('admin')} className="text-sm opacity-40 hover:opacity-60 transition-opacity">Admin</button></li>
+                )}
               </ul>
             </div>
 

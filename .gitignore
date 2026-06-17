@@ -25,4 +25,5 @@ dist-ssr
 
 # Local-only admin tooling (dev branch convenience, not shipped)
 src/components/AdminPage.jsx
-public/uploads/
+
+src/temp_post_resources/

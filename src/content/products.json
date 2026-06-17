@@ -1,73 +1,95 @@
 [
   {
     "id": 1,
-    "title": "Noor Quest Book 1 (PDF)",
-    "category": "eBooks & Stories",
-    "type": "eBook",
+    "title": "Ramadan Planner & Reflection Journal",
+    "subtitle": "A 30-Day Worship Companion",
+    "category": "Journals & Planners",
+    "type": "Book",
     "price": 6.99,
-    "image": "/uploads/1780907526316-plasma_night_redding.jpg",
+    "image": "/images/books/rplanner.jpg",
+    "description": "Make the most of every day of Ramadan with this beautifully designed 30-day planner and reflection journal. Each day includes dedicated spaces for tracking your prayers, Quran reading progress, daily goals, and personal reflections. Whether you are preparing for your first Ramadan or your thirtieth, this journal helps you stay intentional, organized, and spiritually grounded throughout the blessed month.",
+    "details": [
+      {
+        "label": "Pages",
+        "value": "67"
+      },
+      {
+        "label": "Format",
+        "value": "Paperback"
+      },
+      {
+        "label": "Language",
+        "value": "English"
+      },
+      {
+        "label": "Dimensions",
+        "value": "8.5 x 0.16 x 11 inches"
+      },
+      {
+        "label": "Age Range",
+        "value": "Teens & Adults"
+      },
+      {
+        "label": "Publisher",
+        "value": "Noor Creative Atelier"
+      }
+    ],
+    "sampleLink": "https://noorcreativeatelier.gumroad.com/l/radiantfinale",
     "purchaseLinks": [
       {
-        "platform": "Etsy",
-        "url": "https://www.etsy.com/search?q=noor+quest+book"
+        "platform": "Amazon",
+        "url": "https://a.co/d/05mCn7EV"
       },
       {
         "platform": "Gumroad",
-        "url": "https://gumroad.com/search?q=noor+quest+book"
+        "url": "https://noorcreativeatelier.gumroad.com/l/ramadanreflectionplanner"
       }
     ]
   },
   {
-    "id": 3,
-    "title": "Ramadan Activity Planner",
-    "price": 3.99,
-    "type": "Printable",
-    "category": "Planners & Journals",
-    "image": "https://placehold.co/400x500/1A5F7A/FAF7F0?text=Ramadan+Planner",
-    "purchaseLinks": [
+    "id": 2,
+    "title": "Islamic Months Workbook for Kids",
+    "subtitle": "Learn, Trace, and Color the 12 Islamic Months",
+    "category": "Kids & Education",
+    "type": "Book",
+    "price": 6.99,
+    "image": "/images/books/wb.jpg",
+    "description": "A fun, hands-on activity book designed to teach Muslim children ages 5–8 the names and significance of all 12 months of the Islamic (Hijri) calendar. Each month features tracing exercises for the Arabic and English names, coloring pages with beautiful illustrations, and simple facts about the month’s importance in Islam. Perfect for homeschool, weekend Islamic school, or learning at home with parents.",
+    "details": [
       {
-        "platform": "Etsy",
-        "url": "https://www.etsy.com/search?q=ramadan+activity+planner"
+        "label": "Pages",
+        "value": "46"
       },
       {
-        "platform": "Gumroad",
-        "url": "https://gumroad.com/search?q=ramadan+activity+planner"
+        "label": "Format",
+        "value": "Paperback"
+      },
+      {
+        "label": "Language",
+        "value": "English"
+      },
+      {
+        "label": "Dimensions",
+        "value": "8.5 x 0.11 x 11 inches"
+      },
+      {
+        "label": "Age Range",
+        "value": "5–8 years"
+      },
+      {
+        "label": "Publisher",
+        "value": "Noor Creative Atelier"
       }
-    ]
-  },
-  {
-    "id": 4,
-    "title": "Islamic Kids Journal — My Dua Book",
-    "price": 5.99,
-    "type": "Printable",
-    "category": "Planners & Journals",
-    "image": "https://placehold.co/400x500/1A5F7A/FAF7F0?text=My+Dua+Book",
+    ],
+    "sampleLink": "https://noorcreativeatelier.gumroad.com/l/asfpdf",
     "purchaseLinks": [
       {
-        "platform": "Etsy",
-        "url": "https://www.etsy.com/search?q=my+dua+book"
+        "platform": "Amazon",
+        "url": "https://a.co/d/021xzJll"
       },
       {
         "platform": "Gumroad",
-        "url": "https://gumroad.com/search?q=my+dua+book"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "title": "99 Names Flash Cards",
-    "price": 2.99,
-    "type": "Printable",
-    "category": "Coloring & Activities",
-    "image": "https://placehold.co/400x500/1A5F7A/FAF7F0?text=99+Names+Flashcards",
-    "purchaseLinks": [
-      {
-        "platform": "Etsy",
-        "url": "https://www.etsy.com/search?q=99+names+flashcards"
-      },
-      {
-        "platform": "Gumroad",
-        "url": "https://gumroad.com/search?q=99+names+flashcards"
+        "url": "https://noorcreativeatelier.gumroad.com/l/islamicmonths"
       }
     ]
   }

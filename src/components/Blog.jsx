@@ -32,7 +32,7 @@ export default function Blog({ navigate, posts, brandColors }) {
             <div
               className="min-h-[280px] md:min-h-[380px] overflow-hidden"
               style={{
-                backgroundImage: `url('https://placehold.co/800x600/${brandColors.teal.replace('#', '')}/FAF7F0?text=')`,
+                backgroundImage: `url('${featured.thumbnail || `https://placehold.co/800x600/${brandColors.teal.replace('#', '')}/FAF7F0?text=`}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
@@ -75,8 +75,9 @@ export default function Blog({ navigate, posts, brandColors }) {
                 <div
                   className="h-52 overflow-hidden"
                   style={{
-                    backgroundImage: `url('https://placehold.co/600x400/${brandColors.teal.replace('#', '')}/FAF7F0?text=')`,
+                    backgroundImage: `url('${post.thumbnail || `https://placehold.co/600x400/${brandColors.teal.replace('#', '')}/FAF7F0?text=`}')`,
                     backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                   }}
                 />
                 {/* Content */}

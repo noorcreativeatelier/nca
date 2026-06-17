@@ -21,7 +21,7 @@ export default function BlogPost({ post, navigate, brandColors }) {
         style={{
           height: '50vh',
           minHeight: '320px',
-          backgroundImage: `url('https://placehold.co/1600x800/${brandColors.teal.replace('#', '')}/FAF7F0?text=')`,
+          backgroundImage: `url('${post.banner || `https://placehold.co/1600x800/${brandColors.teal.replace('#', '')}/FAF7F0?text=`}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

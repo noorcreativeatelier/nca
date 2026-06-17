@@ -38,6 +38,24 @@ body {
   animation: slideDown 0.28s ease-out both;
 }
 
+@keyframes modalBackdrop {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalSlide {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-modalBackdrop {
+  animation: modalBackdrop 0.2s ease-out both;
+}
+
+.animate-modalSlide {
+  animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

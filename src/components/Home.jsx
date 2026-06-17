@@ -25,11 +25,11 @@ export default function Home({ navigate, products, brandColors }) {
         <img
           src="banner.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity"
+          className="absolute inset-0 w-full h-full object-cover opacity-0 mix-blend-luminosity"
           onError={(e) => { e.target.style.display = 'none'; }}
         />
         {/* Gradient overlay */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(26,95,122,0.95) 0%, rgba(26,95,122,0.75) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(26,95,122,0.82) 0%, rgba(26,95,122,0.6) 100%)' }} />
 
         {/* Content */}
         <div className="relative w-full h-full flex items-center justify-center px-6 md:px-12 lg:px-20" style={{ minHeight: '88vh' }}>

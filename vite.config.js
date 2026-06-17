@@ -44,7 +44,7 @@ function normalizeExtractedText(raw) {
 // JSON files and store uploaded images on disk. Not present in production builds.
 function adminApiPlugin() {
   const contentDir = path.join(__dirname, 'src/content')
-  const uploadsDir = path.join(__dirname, 'public/uploads')
+  const uploadsDir = path.join(__dirname, 'public/images/uploads')
 
   return {
     name: 'admin-content-api',
@@ -93,7 +93,7 @@ function adminApiPlugin() {
             fs.mkdirSync(uploadsDir, { recursive: true })
             fs.writeFileSync(path.join(uploadsDir, safeName), buffer)
             res.setHeader('Content-Type', 'application/json')
-            res.end(JSON.stringify({ path: `/uploads/${safeName}` }))
+            res.end(JSON.stringify({ path: `/images/uploads/${safeName}` }))
             return
           }
 

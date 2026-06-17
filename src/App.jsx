@@ -135,7 +135,7 @@ export default function App() {
           <Route path="/shop" element={<Shop products={products} brandColors={BRAND_COLORS} />} />
           <Route path="/blog" element={<Blog navigate={navigate} posts={blogPosts} brandColors={BRAND_COLORS} />} />
           <Route path="/blog/:postId" element={<BlogPost post={activePost} navigate={navigate} brandColors={BRAND_COLORS} />} />
-          <Route path="/tools" element={<Tools brandColors={BRAND_COLORS} toolsData={toolsData} />} />
+          <Route path="/tools" element={<Tools brandColors={BRAND_COLORS} />} />
           <Route path="/sounds" element={<Sounds brandColors={BRAND_COLORS} />} />
           {AdminPageLazy && (
             <Route

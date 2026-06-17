@@ -25,7 +25,7 @@ export default function Home({ navigate, products, brandColors }) {
         <img
           src="banner.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-0 mix-blend-luminosity"
+          className="absolute inset-0 w-full h-full object-cover opacity-55 mix-blend-luminosity"
           onError={(e) => { e.target.style.display = 'none'; }}
         />
         {/* Gradient overlay */}

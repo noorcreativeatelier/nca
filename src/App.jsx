@@ -8,6 +8,7 @@ import Blog from './components/Blog';
 import BlogPost from './components/BlogPost';
 import Tools from './components/Tools';
 import Sounds from './components/Sounds';
+import PrivacyPolicy from './components/PrivacyPolicy';
 import PRODUCTS from './content/products.json';
 import BLOG_POSTS from './content/blogPosts.json';
 import TOOLS_DATA from './content/tools.json';
@@ -45,11 +46,12 @@ export default function App() {
     : location.pathname === '/blog' ? 'blog'
     : location.pathname === '/tools' ? 'tools'
     : location.pathname === '/sounds' ? 'sounds'
+    : location.pathname === '/privacy' ? 'privacy'
     : location.pathname === '/admin' ? 'admin'
     : 'home';
 
   const navigate = (page, data = null) => {
-    const paths = { shop: '/shop', blog: '/blog', blogPost: data?.id ? `/blog/${data.id}` : '/blog', tools: '/tools', sounds: '/sounds', admin: '/admin' };
+    const paths = { shop: '/shop', blog: '/blog', blogPost: data?.id ? `/blog/${data.id}` : '/blog', tools: '/tools', sounds: '/sounds', privacy: '/privacy', admin: '/admin' };
     navigateRouter(paths[page] ?? '/');
     setIsMobileMenuOpen(false);
     window.scrollTo(0, 0);
@@ -137,6 +139,7 @@ export default function App() {
           <Route path="/blog/:postId" element={<BlogPost post={activePost} navigate={navigate} brandColors={BRAND_COLORS} />} />
           <Route path="/tools" element={<Tools brandColors={BRAND_COLORS} />} />
           <Route path="/sounds" element={<Sounds brandColors={BRAND_COLORS} />} />
+          <Route path="/privacy" element={<PrivacyPolicy brandColors={BRAND_COLORS} />} />
           {AdminPageLazy && (
             <Route
               path="/admin"
@@ -209,7 +212,11 @@ export default function App() {
           {/* Bottom */}
           <div className="mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             <p className="text-sm opacity-60 font-light" style={{ fontFamily: "'Cormorant Garamond', serif" }}>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
-            <p className="text-xs opacity-40 tracking-wide">&copy; 2026 Noor Creative Atelier. All rights reserved.</p>
+            <div className="flex items-center gap-3">
+              <button onClick={() => navigate('privacy')} className="text-xs opacity-40 hover:opacity-70 transition-opacity tracking-wide">Privacy Policy</button>
+              <span className="text-xs opacity-20">|</span>
+              <p className="text-xs opacity-40 tracking-wide">&copy; 2026 Noor Creative Atelier. All rights reserved.</p>
+            </div>
           </div>
         </div>
       </footer>

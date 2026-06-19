@@ -11,6 +11,7 @@ const CONTENT_FILES = {
   products: 'products.json',
   blogPosts: 'blogPosts.json',
   tools: 'tools.json',
+  hijriDays: 'hijriDays.json',
 }
 
 function readRequestBody(req) {

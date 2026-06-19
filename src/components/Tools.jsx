@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Calculator, Calendar, MapPin, Clock, Construction, Loader, MapPinOff } from 'lucide-react';
+import { Calculator, Calendar, MapPin, Clock, Construction, Loader, MapPinOff, BookOpen } from 'lucide-react';
+import HIJRI_DAYS from '../content/hijriDays.json';
 
 /* ------------------------------------------------------------------ */
 /*  Hijri helpers — uses the browser-native Intl islamic-umalqura     */
@@ -164,12 +165,15 @@ function HijriConverter({ brandColors }) {
   const todayStr = new Date().toISOString().slice(0, 10);
   const [dateStr, setDateStr] = useState(todayStr);
 
-  const hijri = useMemo(() => {
+  const hijriData = useMemo(() => {
     if (!dateStr) return null;
     const [y, m, d] = dateStr.split('-').map(Number);
     const date = new Date(y, m - 1, d);
     if (isNaN(date.getTime())) return null;
-    return hijriLong(date);
+    const long = hijriLong(date);
+    const parts = hijriParts(date);
+    const dayEntry = HIJRI_DAYS?.[String(parts.month)]?.[String(parts.day)];
+    return { ...long, significance: dayEntry?.title ? dayEntry : null };
   }, [dateStr]);
 
   const today = useMemo(() => hijriLong(new Date()), []);
@@ -205,17 +209,32 @@ function HijriConverter({ brandColors }) {
       {/* Converted result */}
       <div className="p-6 text-center mb-4" style={{ backgroundColor: '#FAF7F0', border: '1px solid rgba(26,95,122,0.08)' }}>
         <p className="text-[9px] tracking-[0.18em] uppercase opacity-50 mb-3">Hijri Date</p>
-        {hijri ? (
+        {hijriData ? (
           <>
             <p className="text-2xl font-light" style={{ fontFamily: "'Cormorant Garamond', serif", color: brandColors.gold }}>
-              {hijri.day} {hijri.month}
+              {hijriData.day} {hijriData.month}
             </p>
-            <p className="text-sm opacity-60 mt-1">{hijri.year} AH</p>
+            <p className="text-sm opacity-60 mt-1">{hijriData.year} AH</p>
           </>
         ) : (
           <p className="text-sm opacity-40 italic">Select a valid date above</p>
         )}
       </div>
+
+      {/* Significance of the day */}
+      {hijriData?.significance && (
+        <div className="p-5 mb-4" style={{ backgroundColor: 'rgba(200,150,62,0.06)', border: '1px solid rgba(200,150,62,0.15)' }}>
+          <div className="flex items-center gap-2 mb-2">
+            <BookOpen size={14} style={{ color: brandColors.gold }} />
+            <p className="text-xs font-medium tracking-[0.08em] uppercase" style={{ color: brandColors.gold }}>
+              {hijriData.significance.title}
+            </p>
+          </div>
+          <p className="text-sm leading-relaxed opacity-70">
+            {hijriData.significance.text}
+          </p>
+        </div>
+      )}
 
       {/* Today's date always visible */}
       <div className="mt-auto pt-4" style={{ borderTop: '1px solid rgba(26,95,122,0.08)' }}>

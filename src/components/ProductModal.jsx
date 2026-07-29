@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ExternalLink, Eye } from 'lucide-react';
 
 export default function ProductModal({ product, brandColors, onClose }) {
   const purchaseLinks = product.purchaseLinks || [];
   const details = product.details || [];
+  const isLongDescription = (product.description?.length || 0) > 400;
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -15,14 +17,14 @@ export default function ProductModal({ product, brandColors, onClose }) {
     };
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-modalBackdrop"
       style={{ backgroundColor: 'rgba(26,95,122,0.45)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
-        className="relative bg-[#FAF7F0] w-full max-w-3xl max-h-[90vh] overflow-y-auto animate-modalSlide"
+        className={`relative bg-[#FAF7F0] w-full ${isLongDescription ? 'max-w-5xl' : 'max-w-3xl'} max-h-[90vh] overflow-y-auto md:overflow-hidden animate-modalSlide`}
         style={{ border: '1px solid rgba(26,95,122,0.1)' }}
       >
         {/* Close button */}
@@ -35,9 +37,9 @@ export default function ProductModal({ product, brandColors, onClose }) {
           <X size={20} />
         </button>
 
-        <div className="grid md:grid-cols-2 gap-0">
+        <div className="grid md:grid-cols-2 gap-0 md:max-h-[90vh]">
           {/* Image */}
-          <div className="relative flex items-center justify-center p-6 md:p-10" style={{ backgroundColor: 'rgba(26,95,122,0.04)', minHeight: 320 }}>
+          <div className="relative flex items-center justify-center p-6 md:p-10 md:max-h-[90vh]" style={{ backgroundColor: 'rgba(26,95,122,0.04)', minHeight: 320 }}>
             <img
               src={product.image}
               alt={product.title}
@@ -53,7 +55,7 @@ export default function ProductModal({ product, brandColors, onClose }) {
           </div>
 
           {/* Content */}
-          <div className="p-8 md:p-10 flex flex-col">
+          <div className="p-8 md:p-10 flex flex-col md:max-h-[90vh] md:overflow-y-auto">
             <p className="text-[9px] tracking-[0.2em] uppercase font-medium mb-2" style={{ color: brandColors.gold }}>
               {product.category}
             </p>
@@ -136,6 +138,7 @@ export default function ProductModal({ product, brandColors, onClose }) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
